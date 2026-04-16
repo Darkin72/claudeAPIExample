@@ -1,16 +1,16 @@
 # API Test Guide
 
-Project nay dung endpoint Anthropic-compatible:
+Project này dùng endpoint tương thích Anthropic:
 
 - Base URL: `https://claude.zunef.com/v1/ai`
 - Models: `https://claude.zunef.com/v1/ai/models`
 - Messages: `https://claude.zunef.com/v1/ai/messages`
 
-Auth hien tai dung `x-api-key`.
+Auth hiện tại dùng `x-api-key`.
 
-## 1. Cau hinh `.env`
+## 1. Cấu hình `.env`
 
-Vi du:
+Ví dụ:
 
 ```env
 ANTHROPIC_AUTH_TOKEN=your_api_key
@@ -20,34 +20,34 @@ MAX_TOKENS=1024
 TEST_PROMPT=Hello, please reply with a short API test message.
 ```
 
-Y nghia cac bien:
+Ý nghĩa các biến:
 
 - `ANTHROPIC_AUTH_TOKEN`: API key
-- `ANTHROPIC_BASE_URL`: base URL cua API
-- `ANTHROPIC_MODEL`: model dung de goi `messages`
-- `MAX_TOKENS`: so token output toi da
+- `ANTHROPIC_BASE_URL`: base URL của API
+- `ANTHROPIC_MODEL`: model dùng để gọi `messages`
+- `MAX_TOKENS`: số token output tối đa
 - `TEST_PROMPT`: prompt test
 
-## 2. Cac file example
+## 2. Các file example
 
-Ba file example la ba file doc lap, khong dung helper chung. Moi file tu xu ly:
+Ba file example là ba file độc lập, không dùng helper chung. Mỗi file tự xử lý:
 
 - load `.env`
-- doc config
-- tao request
-- goi `curl.exe`
-- in ket qua
+- đọc config
+- tạo request
+- gọi `curl.exe`
+- in kết quả
 
-Danh sach file:
+Danh sách file:
 
-- [model_list_example.py](/d:/Python/azure/model_list_example.py): goi `GET /models` va in response
-- [invoke_example.py](/d:/Python/azure/invoke_example.py): goi `POST /messages` mot lan voi `stream: false`, payload co `thinking`, va in ra raw response goc
-- [invoke_stream_example.py](/d:/Python/azure/invoke_stream_example.py): goi `POST /messages` mot lan voi `stream: true` va in text stream ra terminal
-- [test.py](/d:/Python/azure/test.py): chay lan luot 3 file tren trong cung mot process Python
+- [model_list_example.py](/d:/Python/azure/model_list_example.py): gọi `GET /models` và in response
+- [invoke_example.py](/d:/Python/azure/invoke_example.py): gọi `POST /messages` một lần với `stream: false`, payload có `thinking`, và in ra raw response gốc
+- [invoke_stream_example.py](/d:/Python/azure/invoke_stream_example.py): gọi `POST /messages` một lần với `stream: true` và in text stream ra terminal
+- [test.py](/d:/Python/azure/test.py): chạy lần lượt 3 file trên trong cùng một process Python
 
-## 3. Cach chay
+## 3. Cách chạy
 
-Chay tung file:
+Chạy từng file:
 
 ```powershell
 python .\model_list_example.py
@@ -55,21 +55,21 @@ python .\invoke_example.py
 python .\invoke_stream_example.py
 ```
 
-Chay tong hop:
+Chạy tổng hợp:
 
 ```powershell
 python .\test.py
 ```
 
-## 4. Ket qua mong doi
+## 4. Kết quả mong đợi
 
-- `model_list_example.py`: in JSON model list neu server tra JSON; neu khong, file se in raw response
-- `invoke_example.py`: in `=== REQUEST JSON ===` va sau do in `=== RESPONSE ===` voi response goc tu API
-- `invoke_stream_example.py`: in request JSON truoc, sau do in text stream khi server day du lieu
+- `model_list_example.py`: in JSON model list nếu server trả JSON; nếu không, file sẽ in raw response
+- `invoke_example.py`: in `=== REQUEST JSON ===` và sau đó in `=== RESPONSE ===` với response gốc từ API
+- `invoke_stream_example.py`: in request JSON trước, sau đó in text stream khi server đẩy dữ liệu
 
-## 5. Luu y
+## 5. Lưu ý
 
-- Cac file dang goi API qua `curl.exe`.
-- `invoke_example.py` khong parse response nua; muc tieu la de nhin truc tiep raw response, bao gom ca phan `thinking` neu API tra ve.
-- `invoke_stream_example.py` dang doc SSE va in ra text delta trong stream.
-- Neu ban muon test rieng model list, hay chay `model_list_example.py` truoc.
+- Các file đang gọi API qua `curl.exe`.
+- `invoke_example.py` không parse response nữa; mục tiêu là để nhìn trực tiếp raw response, bao gồm cả phần `thinking` nếu API trả về.
+- `invoke_stream_example.py` đang đọc SSE và in ra text delta trong stream.
+- Nếu bạn muốn test riêng model list, hãy chạy `model_list_example.py` trước.
